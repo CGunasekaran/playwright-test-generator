@@ -6,15 +6,24 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "next lint",
+    "setup": "npm install && npx playwright install chromium",
+    "postinstall": "echo '\n⚠️  Remember to install Playwright browsers: npx playwright install chromium\n'"
   },
   "dependencies": {
+    "@monaco-editor/react": "^4.7.0",
+    "@playwright/test": "^1.57.0",
+    "file-saver": "^2.0.5",
+    "jszip": "^3.10.1",
+    "monaco-editor": "^0.55.1",
     "next": "16.1.1",
+    "playwright": "^1.57.0",
     "react": "19.2.3",
     "react-dom": "19.2.3"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@types/file-saver": "^2.0.7",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
