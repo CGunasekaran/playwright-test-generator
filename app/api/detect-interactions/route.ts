@@ -56,14 +56,14 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ flows });
   } catch (error: any) {
     console.error("Interaction detection error:", error);
-    
+
     let errorMessage = error.message || "Failed to detect interactions";
-    
+
     if (error.message && error.message.includes("connect")) {
       errorMessage =
         "Failed to connect to browser service. Please check your BROWSERLESS_WS_ENDPOINT configuration.";
     }
-    
+
     return NextResponse.json({ error: errorMessage }, { status: 500 });
   } finally {
     if (browser) {

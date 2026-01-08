@@ -9,12 +9,47 @@ interface URLInputProps {
 
 export default function URLInput({ onAnalyze, isLoading }: URLInputProps) {
   const [url, setUrl] = useState("");
+  const [error, setError] = useState("");
+
+  const validateAndFormatURL = (input: string): string | null => {
+    let urlString = input.trim();
+    
+    // If no protocol, add https://
+    if (!urlString.match(/^https?:\/\//i)) {
+      urlString = `https://${urlString}`;
+    }
+
+    try {
+      // Validate URL
+      const urlObj = new URL(urlString);
+      
+      // Must be http or https
+      if (!['http:', 'https:'].includes(urlObj.protocol)) {
+        return null;
+      }
+      
+      return urlObj.href;
+    } catch {
+      return null;
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (url.trim()) {
-      onAnalyze(url);
+    setError("");
+    
+    if (!url.trim()) {
+      setError("Please enter a URL");
+      return;
     }
+
+    const validURL = validateAndFormatURL(url);
+    if (!validURL) {
+      setError("Please enter a valid URL (e.g., example.com or https://example.com)");
+      return;
+    }
+
+    onAnalyze(validURL);
   };
 
   return (
@@ -27,16 +62,30 @@ export default function URLInput({ onAnalyze, isLoading }: URLInputProps) {
           Enter Page URL to Generate Playwright Tests
         </label>
         <div className="flex flex-col md:flex-row gap-4">
-          <input
-            id="url"
-            type="url"
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
-            placeholder="https://example.com"
-            className="flex-1 px-6 py-4 bg-slate-50 dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500 text-lg text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 transition-all"
-            required
-            disabled={isLoading}
-          />
+          <div className="flex-1">
+            <input
+              id="url"
+              type="text"
+              value={url}
+              onChange={(e) => {
+                setUrl(e.target.value);
+                setError("");
+              }}
+              placeholder="example.com or https://example.com"
+              className={`w-full px-6 py-4 bg-slate-50 dark:bg-slate-900 border-2 ${
+                error 
+                  ? 'border-red-500 focus:ring-red-500/20 focus:border-red-500' 
+                  : 'border-slate-200 dark:border-slate-700 focus:ring-indigo-500/20 focus:border-indigo-500'
+              } rounded-xl focus:ring-4 text-lg text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 transition-all`}
+              required
+              disabled={isLoading}
+            />
+            {error && (
+              <p className="mt-2 text-sm text-red-600 dark:text-red-400">
+                {error}
+              </p>
+            )}
+          </div>
           <button
             type="submit"
             disabled={isLoading}
