@@ -1,11 +1,29 @@
 import { chromium, Browser } from "playwright-chromium";
 
 /**
- * Creates a browser instance for local development
- * Note: This will not work on Vercel or other serverless platforms
- * that don't support Playwright browsers
+ * Creates a browser instance, either local or remote based on environment
  */
 export async function createBrowser(): Promise<Browser> {
+  const wsEndpoint = process.env.BROWSERLESS_WS_ENDPOINT;
+
+  if (wsEndpoint) {
+    // Connect to remote browser (e.g., Browserless.io for Vercel)
+    console.log("Connecting to remote browser...");
+    try {
+      return await chromium.connect(wsEndpoint, {
+        timeout: 30000, // 30 second timeout
+      });
+    } catch (error) {
+      console.error("Failed to connect to remote browser:", error);
+      throw new Error(
+        `Failed to connect to remote browser. Please check your BROWSERLESS_WS_ENDPOINT configuration. Error: ${
+          error instanceof Error ? error.message : "Unknown error"
+        }`
+      );
+    }
+  }
+
+  // Launch local browser for development
   console.log("Launching local browser...");
   try {
     return await chromium.launch({
@@ -19,14 +37,6 @@ export async function createBrowser(): Promise<Browser> {
     });
   } catch (error) {
     console.error("Failed to launch local browser:", error);
-    
-    // Check if running on Vercel/serverless
-    if (process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME) {
-      throw new Error(
-        "Browser automation is not available on this deployment platform. This app requires local Playwright browsers which are not supported on serverless platforms like Vercel. Please run this app locally or deploy to a platform that supports Docker (Railway, Render, Fly.io)."
-      );
-    }
-    
     throw new Error(
       `Failed to launch browser. Make sure Playwright browsers are installed: npx playwright install chromium. Error: ${
         error instanceof Error ? error.message : "Unknown error"

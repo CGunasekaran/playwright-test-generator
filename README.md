@@ -271,13 +271,31 @@ See [TROUBLESHOOTING.md](TROUBLESHOOTING.md) for more details.
 
 ## 🚀 Deployment
 
-### ⚠️ Important Deployment Note
+### Deploy to Vercel
 
-This app requires Playwright browsers to analyze webpages. **Vercel and most serverless platforms do not support Playwright browsers** due to their large size (~400MB) and resource requirements.
+This app works on Vercel using a remote browser service (Browserless.io).
 
-### Recommended for Local Development Only
+**Quick Setup:**
 
-**Best Experience:**
+1. **Sign up for Browserless.io**
+   - Go to [Browserless.io](https://www.browserless.io/)
+   - Sign up (free tier: 5 hours/month)
+   - Copy your API token
+
+2. **Deploy to Vercel**
+   - Click the button below or connect your GitHub repo
+   - Add environment variable in Vercel settings:
+     ```
+     BROWSERLESS_WS_ENDPOINT=wss://chrome.browserless.io?token=YOUR_TOKEN
+     ```
+   - Deploy!
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/CGunasekaran/playwright-test-generator)
+
+**Detailed instructions:** See [VERCEL_DEPLOYMENT.md](VERCEL_DEPLOYMENT.md)
+
+### Local Development (No Browserless Required)
+
 ```bash
 # Install dependencies
 npm install
@@ -285,27 +303,17 @@ npm install
 # Install Playwright browsers
 npx playwright install chromium
 
-# Run locally
+# Run locally (no BROWSERLESS_WS_ENDPOINT needed)
 npm run dev
 ```
 
-### Deploy to Platforms with Playwright Support
+### Alternative Platforms (Native Playwright Support)
 
-If you need to deploy this app, use platforms that support Docker/containers:
-
-1. **Railway** - Easiest, similar to Vercel, supports Docker
-2. **Render** - Free tier, supports Playwright
-3. **Fly.io** - Docker-based, global edge
-4. **DigitalOcean App Platform** - Container support
-5. **Self-hosted VPS** - Full control (AWS EC2, DigitalOcean Droplet, etc.)
-
-### Deploy to Vercel (Static UI Only)
-
-You can deploy to Vercel, but page analysis features won't work. The UI will load, but you'll get errors when trying to analyze pages.
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/CGunasekaran/playwright-test-generator)
-
-**Note:** For full functionality, deploy to Railway or Render instead.
+No remote browser service needed:
+- **Railway** - Docker-based, easiest alternative
+- **Render** - Free tier available
+- **Fly.io** - Docker-based deployment
+- **DigitalOcean App Platform** - Container support
 
 ## 🤝 Contributing
 
