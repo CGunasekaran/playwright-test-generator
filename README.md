@@ -271,34 +271,41 @@ See [TROUBLESHOOTING.md](TROUBLESHOOTING.md) for more details.
 
 ## 🚀 Deployment
 
-### Deploy to Vercel (Recommended)
+### ⚠️ Important Deployment Note
 
-**⚠️ Important: Vercel serverless functions cannot run Playwright browsers directly.**
+This app requires Playwright browsers to analyze webpages. **Vercel and most serverless platforms do not support Playwright browsers** due to their large size (~400MB) and resource requirements.
 
-For production deployment on Vercel, you need to use a remote browser service like Browserless.io.
+### Recommended for Local Development Only
 
-See [VERCEL_DEPLOYMENT.md](VERCEL_DEPLOYMENT.md) for detailed instructions.
+**Best Experience:**
+```bash
+# Install dependencies
+npm install
 
-**Quick Setup:**
-1. Sign up for [Browserless.io](https://www.browserless.io/) (free tier available)
-2. Add environment variable in Vercel:
-   ```
-   BROWSERLESS_WS_ENDPOINT=wss://chrome.browserless.io?token=YOUR_TOKEN
-   ```
-3. Deploy to Vercel:
-   ```bash
-   npm i -g vercel
-   vercel --prod
-   ```
+# Install Playwright browsers
+npx playwright install chromium
+
+# Run locally
+npm run dev
+```
+
+### Deploy to Platforms with Playwright Support
+
+If you need to deploy this app, use platforms that support Docker/containers:
+
+1. **Railway** - Easiest, similar to Vercel, supports Docker
+2. **Render** - Free tier, supports Playwright
+3. **Fly.io** - Docker-based, global edge
+4. **DigitalOcean App Platform** - Container support
+5. **Self-hosted VPS** - Full control (AWS EC2, DigitalOcean Droplet, etc.)
+
+### Deploy to Vercel (Static UI Only)
+
+You can deploy to Vercel, but page analysis features won't work. The UI will load, but you'll get errors when trying to analyze pages.
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/CGunasekaran/playwright-test-generator)
 
-### Alternative Platforms with Native Playwright Support
-- **Railway**: Docker-based, runs Playwright natively
-- **Render**: Good for Node.js apps with Playwright
-- **Fly.io**: Docker-based deployment
-- **AWS Lambda**: With custom layers for Playwright
-- **Digital Ocean App Platform**: Container-based deployment
+**Note:** For full functionality, deploy to Railway or Render instead.
 
 ## 🤝 Contributing
 
