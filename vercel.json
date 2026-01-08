@@ -6,6 +6,7 @@
     }
   },
   "env": {
-    "PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD": "0"
+    "PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD": "1",
+    "BROWSERLESS_WS_ENDPOINT": "@browserless_ws_endpoint"
   }
 }

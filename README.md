@@ -273,17 +273,31 @@ See [TROUBLESHOOTING.md](TROUBLESHOOTING.md) for more details.
 
 ### Deploy to Vercel (Recommended)
 
-1. Push your code to GitHub
-2. Visit [Vercel](https://vercel.com/new)
-3. Import your repository
-4. Configure environment variables (if any)
-5. Deploy!
+**⚠️ Important: Vercel serverless functions cannot run Playwright browsers directly.**
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/CGunasekaran/Test-Generator)
+For production deployment on Vercel, you need to use a remote browser service like Browserless.io.
 
-### Other Platforms
-- **Netlify**: Supports Next.js with zero config
-- **AWS Amplify**: Full-stack deployment
+See [VERCEL_DEPLOYMENT.md](VERCEL_DEPLOYMENT.md) for detailed instructions.
+
+**Quick Setup:**
+1. Sign up for [Browserless.io](https://www.browserless.io/) (free tier available)
+2. Add environment variable in Vercel:
+   ```
+   BROWSERLESS_WS_ENDPOINT=wss://chrome.browserless.io?token=YOUR_TOKEN
+   ```
+3. Deploy to Vercel:
+   ```bash
+   npm i -g vercel
+   vercel --prod
+   ```
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/CGunasekaran/playwright-test-generator)
+
+### Alternative Platforms with Native Playwright Support
+- **Railway**: Docker-based, runs Playwright natively
+- **Render**: Good for Node.js apps with Playwright
+- **Fly.io**: Docker-based deployment
+- **AWS Lambda**: With custom layers for Playwright
 - **Digital Ocean App Platform**: Container-based deployment
 
 ## 🤝 Contributing
