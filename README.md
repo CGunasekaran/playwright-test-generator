@@ -271,30 +271,47 @@ See [TROUBLESHOOTING.md](TROUBLESHOOTING.md) for more details.
 
 ## 🚀 Deployment
 
-### Deploy to Vercel
+### Deploy to Railway (Recommended)
 
-This app works on Vercel using a remote browser service (Browserless.io).
+**✅ Native Playwright support - No external services needed!**
+
+Railway runs your app in Docker with Playwright browsers pre-installed.
 
 **Quick Setup:**
 
-1. **Sign up for Browserless.io**
-   - Go to [Browserless.io](https://www.browserless.io/)
-   - Sign up (free tier: 5 hours/month)
-   - Copy your API token
+1. **Sign up for Railway**
+   - Go to [Railway.app](https://railway.app/)
+   - Login with GitHub
 
-2. **Deploy to Vercel**
-   - Click the button below or connect your GitHub repo
-   - Add environment variable in Vercel settings:
-     ```
-     BROWSERLESS_WS_ENDPOINT=wss://chrome.browserless.io?token=YOUR_TOKEN
-     ```
-   - Deploy!
+2. **Deploy**
+   - Click "New Project" → "Deploy from GitHub repo"
+   - Select `playwright-test-generator`
+   - Railway automatically detects Dockerfile and deploys!
+   - Get your public URL and start using
+
+**No environment variables needed!** Everything works out of the box.
+
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/new/template?template=https://github.com/CGunasekaran/playwright-test-generator)
+
+**Detailed instructions:** See [RAILWAY_DEPLOYMENT.md](RAILWAY_DEPLOYMENT.md)
+
+### Deploy to Vercel (Requires Browserless.io)
+
+Vercel deployment requires an external browser service like Browserless.io (free tier often doesn't support WebSocket connections needed for Playwright).
+
+**Setup:**
+1. Sign up for [Browserless.io](https://www.browserless.io/) (paid plan required for WebSocket)
+2. Add environment variable in Vercel:
+   ```
+   BROWSERLESS_WS_ENDPOINT=wss://chrome.browserless.io?token=YOUR_TOKEN
+   ```
+3. Deploy to Vercel
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/CGunasekaran/playwright-test-generator)
 
-**Detailed instructions:** See [VERCEL_DEPLOYMENT.md](VERCEL_DEPLOYMENT.md)
+**Note:** Railway is recommended as it's simpler and doesn't require external services.
 
-### Local Development (No Browserless Required)
+### Local Development
 
 ```bash
 # Install dependencies
@@ -303,17 +320,9 @@ npm install
 # Install Playwright browsers
 npx playwright install chromium
 
-# Run locally (no BROWSERLESS_WS_ENDPOINT needed)
+# Run locally
 npm run dev
 ```
-
-### Alternative Platforms (Native Playwright Support)
-
-No remote browser service needed:
-- **Railway** - Docker-based, easiest alternative
-- **Render** - Free tier available
-- **Fly.io** - Docker-based deployment
-- **DigitalOcean App Platform** - Container support
 
 ## 🤝 Contributing
 
