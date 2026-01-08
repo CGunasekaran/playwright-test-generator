@@ -2,7 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 import { PageAnalyzer } from "@/lib/page-analyzer";
 import { InteractionAnalyzer } from "@/lib/interaction-analyzer";
 import { APICall } from "@/types";
-import { createBrowser, defaultContextOptions, antiDetectionScript } from "@/lib/browser-config";
+import {
+  createBrowser,
+  defaultContextOptions,
+  antiDetectionScript,
+} from "@/lib/browser-config";
 
 export async function POST(request: NextRequest) {
   let browser;

@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { InteractionDetector } from "@/lib/interaction-detector";
-import { createBrowser, defaultContextOptions, antiDetectionScript } from "@/lib/browser-config";
+import {
+  createBrowser,
+  defaultContextOptions,
+  antiDetectionScript,
+} from "@/lib/browser-config";
 
 export async function POST(request: NextRequest) {
   let browser;
