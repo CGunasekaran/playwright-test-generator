@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { chromium } from "playwright";
+import { chromium } from "playwright-chromium";
 import { PageAnalyzer } from "@/lib/page-analyzer";
 import { InteractionAnalyzer } from "@/lib/interaction-analyzer";
 import { APICall } from "@/types";

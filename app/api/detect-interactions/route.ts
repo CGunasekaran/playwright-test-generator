@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { chromium } from "playwright";
+import { chromium } from "playwright-chromium";
 import { InteractionDetector } from "@/lib/interaction-detector";
 
 export async function POST(request: NextRequest) {
