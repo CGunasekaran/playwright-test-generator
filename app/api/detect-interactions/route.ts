@@ -56,13 +56,22 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ flows });
   } catch (error: any) {
     console.error("Interaction detection error:", error);
-    return NextResponse.json(
-      { error: error.message || "Failed to detect interactions" },
-      { status: 500 }
-    );
+    
+    let errorMessage = error.message || "Failed to detect interactions";
+    
+    if (error.message && error.message.includes("connect")) {
+      errorMessage =
+        "Failed to connect to browser service. Please check your BROWSERLESS_WS_ENDPOINT configuration.";
+    }
+    
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
   } finally {
     if (browser) {
-      await browser.close();
+      try {
+        await browser.close();
+      } catch (closeError) {
+        console.error("Error closing browser:", closeError);
+      }
     }
   }
 }

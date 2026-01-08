@@ -91,16 +91,23 @@ export async function POST(request: NextRequest) {
 
     let errorMessage = error.message || "Failed to analyze page";
 
-    // Check for Playwright browser not installed error
+    // Check for common error patterns
     if (error.message && error.message.includes("Executable doesn't exist")) {
       errorMessage =
         "Playwright browsers not installed. Please run: npx playwright install chromium";
+    } else if (error.message && error.message.includes("connect")) {
+      errorMessage =
+        "Failed to connect to browser service. Please check your BROWSERLESS_WS_ENDPOINT configuration.";
     }
 
     return NextResponse.json({ error: errorMessage }, { status: 500 });
   } finally {
     if (browser) {
-      await browser.close();
+      try {
+        await browser.close();
+      } catch (closeError) {
+        console.error("Error closing browser:", closeError);
+      }
     }
   }
 }

@@ -9,20 +9,40 @@ export async function createBrowser(): Promise<Browser> {
   if (wsEndpoint) {
     // Connect to remote browser (e.g., Browserless.io for Vercel)
     console.log("Connecting to remote browser...");
-    return await chromium.connect(wsEndpoint);
+    try {
+      return await chromium.connect(wsEndpoint, {
+        timeout: 30000, // 30 second timeout
+      });
+    } catch (error) {
+      console.error("Failed to connect to remote browser:", error);
+      throw new Error(
+        `Failed to connect to remote browser. Please check your BROWSERLESS_WS_ENDPOINT configuration. Error: ${
+          error instanceof Error ? error.message : "Unknown error"
+        }`
+      );
+    }
   }
 
   // Launch local browser for development
   console.log("Launching local browser...");
-  return await chromium.launch({
-    headless: true,
-    args: [
-      "--disable-blink-features=AutomationControlled",
-      "--disable-dev-shm-usage",
-      "--no-sandbox",
-      "--disable-setuid-sandbox",
-    ],
-  });
+  try {
+    return await chromium.launch({
+      headless: true,
+      args: [
+        "--disable-blink-features=AutomationControlled",
+        "--disable-dev-shm-usage",
+        "--no-sandbox",
+        "--disable-setuid-sandbox",
+      ],
+    });
+  } catch (error) {
+    console.error("Failed to launch local browser:", error);
+    throw new Error(
+      `Failed to launch browser. Make sure Playwright browsers are installed: npx playwright install chromium. Error: ${
+        error instanceof Error ? error.message : "Unknown error"
+      }`
+    );
+  }
 }
 
 /**
